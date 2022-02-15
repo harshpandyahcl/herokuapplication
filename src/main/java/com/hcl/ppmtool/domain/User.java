@@ -1,6 +1,9 @@
 package com.hcl.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,87 +16,32 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Getter @Setter private Long id;
 
     @Email(message = "Username needs to be an email")
     @NotBlank(message = "username is required")
     @Column(unique = true)
-    private String username;
+    @Getter @Setter private String username;
+
     @NotBlank(message = "Please enter your full name")
-    private String fullName;
+    @Getter @Setter private String fullName;
+
     @NotBlank(message = "Password field is required")
-    private String password;
+    @Getter @Setter private String password;
+
     @Transient
-    private String confirmPassword;
-    private Date create_At;
-    private Date update_At;
+    @Getter @Setter private String confirmPassword;
+    @Getter @Setter private Date create_At;
+    @Getter @Setter private Date update_At;
 
     //OneToMany with Project
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
-
-    public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public Date getCreate_At() {
-        return create_At;
-    }
-
-    public void setCreate_At(Date create_At) {
-        this.create_At = create_At;
-    }
-
-    public Date getUpdate_At() {
-        return update_At;
-    }
-
-    public void setUpdate_At(Date update_At) {
-        this.update_At = update_At;
-    }
 
     public List<Project> getProjects() {
         return projects;
